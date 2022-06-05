@@ -8,13 +8,14 @@ defmodule Dupper.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: Dupper.Worker.start_link(arg)
-      # {Dupper.Worker, arg}
+      {Dupper.Result, name: Dupper.Result},
+      {Dupper.FsTraverser, name: Dupper.FsTraverser},
+      {Dupper.HasherSupervisor, name: Dupper.HasherSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Dupper.Supervisor]
+    opts = [strategy: :one_for_all, name: Dupper.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end
